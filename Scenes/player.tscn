@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dqd5ud37rnsns" path="res://Assets/Kings and Pigs/Sprites/01-King Human/Jump (78x58).png" id="8_6omc6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k4fqn"]
+size = Vector2(23, 26)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_057qk"]
 atlas = ExtResource("2_dxgyl")
@@ -284,10 +285,13 @@ animations = [{
 script = ExtResource("1_nveek")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-7.5, 2)
 shape = SubResource("RectangleShape2D_k4fqn")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_neyae")
-animation = &"death"
+animation = &"idle"
+frame = 7
+frame_progress = 0.37073
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

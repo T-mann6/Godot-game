@@ -6,8 +6,6 @@ extends CharacterBody2D
 @export var speed = 100
 @export var gravity = 200
 @export var jump_height = -100
-var is_attacking = false
-var is_climbing = false
 
 #movement and physics
 func _physics_process(delta):
@@ -15,11 +13,12 @@ func _physics_process(delta):
 	velocity.y += gravity * delta
 	# horizontal movement processing (left, right)
 	horizontal_movement()
+	
 	#applies movement
-	#move_and_slide()
+	move_and_slide()
 	
 	#applies animations
-	if !is_attacking:
+	if !Global.is_attacking:
 		player_animations()
 
 func horizontal_movement():
@@ -34,11 +33,13 @@ func player_animations():
 		if Input.is_action_pressed("ui_left") || Input.is_action_just_released("ui.jump"):
 			$AnimatedSprite2D.flip_h = true
 			$AnimatedSprite2D.play("run")
+			$CollisionShape2D.position.x = -7
 			
 		#on right (add is_action_just_released so you continue running after jumping)
-		if Input.is_action_pressed("ui_right") || Input.is_action_just_released("ui_left"):
+		if Input.is_action_pressed("ui_right") || Input.is_action_just_released("ui_jump"):
 			$AnimatedSprite2D.flip_h = false
 			$AnimatedSprite2D.play("run")
+			$CollisionShape2D.position.x = -7
 			
 		if !Input.is_anything_pressed():
 			$AnimatedSprite2D.play("idle")
@@ -46,7 +47,7 @@ func player_animations():
 func _input(event):
 	#on attack
 	if event.is_action_pressed("ui_attack"):
-		is_attacking = true
+		Global.is_attacking = true
 		$AnimatedSprite2D.play("attack")
 	
 	#on jump
@@ -55,16 +56,20 @@ func _input(event):
 		$AnimatedSprite2D.play("jump")
 	
 	#on climbing ladders
-	if is_climbing == true:
+	if Global.is_climbing == true:
+		if Input.is_anything_pressed():
+			$AnimatedSprite2D.play("idle")
 		if Input.is_action_pressed("ui_up"):
 			$AnimatedSprite2D.play("climb")
 			gravity = 100
-			velocity.y = -200
+			velocity.y = -160
 	
 	#reset gravity
 	else:
 		gravity = 200
-		is_climbing = false
+		Global.is_climbing = false
 
+#reset our animation variables
 func _on_animated_sprite_2d_animation_finished():
-	is_attacking = false
+	Global.is_attacking = false
+	Global.is_climbing = false

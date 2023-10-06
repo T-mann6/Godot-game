@@ -30,7 +30,7 @@ func horizontal_movement():
 #animations
 func player_animations():
 		#on left (add is_action_just_released so you continue running after jumping)
-		if Input.is_action_pressed("ui_left") || Input.is_action_just_released("ui.jump"):
+		if Input.is_action_pressed("ui_left") || Input.is_action_just_released("ui_jump"):
 			$AnimatedSprite2D.flip_h = true
 			$AnimatedSprite2D.play("run")
 			$CollisionShape2D.position.x = -7
@@ -59,6 +59,7 @@ func _input(event):
 	if Global.is_climbing == true:
 		if Input.is_anything_pressed():
 			$AnimatedSprite2D.play("idle")
+			
 		if Input.is_action_pressed("ui_up"):
 			$AnimatedSprite2D.play("climb")
 			gravity = 100
